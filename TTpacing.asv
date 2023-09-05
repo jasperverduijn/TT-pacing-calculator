@@ -27,7 +27,7 @@ avgpower
 
 %% Optimization
 func = @(x) simlap(sections_heading,sections_length,x,windspeed,wind_heading,cda,mass,Cr,slope);
-nonlinconx = @(x) nonlincon(x,sections_heading,sections_length,windspeed,wind_heading,cda,mass,Cr,slope,max_avgpower);
+nonlinconx = @(x) nonlincon(x,sections_heading,sections_length,windspeed,wind_heading,cda,mass,Cr,slope);
 
 options = optimoptions("fmincon","Display","iter");
 
@@ -37,13 +37,13 @@ b = [];
 Aeq = [];
 beq = [];
 lb = [200,200,200,200]; %lower bounds per section in watts
-ub = [370,370,370,370]; %upper bounds per section in watts
+ub = [370,380,380,380]; %upper bounds per section in watts
 
 %Fmincon optimizer (optimization toolbox)
 x = fmincon(func,x0,A,b,Aeq,beq,lb,ub,nonlinconx,options)
 
 %% Functions
-function [c,ceq] = nonlincon(x,sections_heading,sections_length,windspeed,wind_heading,cda,mass,Cr,slope,max_avgpower)
+function [c,ceq] = nonlincon(x,sections_heading,sections_length,windspeed,wind_heading,cda,mass,Cr,slope)
     [~,avgpower,~,~] = simlap(sections_heading,sections_length,x,windspeed,wind_heading,cda,mass,Cr,slope);
     ceq = [];
 
